@@ -14,6 +14,7 @@ helm upgrade -i apm-server -f apm-server-values.yaml charts/apm-server-8.5.1.tgz
 kubectl apply -k manifests/kube-state-metrics/
 
 ### install elastic-agent
+# change elastic password line 21 - manifests/elastic-agent-standalone-kubernetes.yaml
 kubectl apply -f manifests/elastic-agent-standalone-kubernetes.yaml
 
 ### install otel-collector
