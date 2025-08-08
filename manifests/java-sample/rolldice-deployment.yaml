@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rolldice
+  name: rolldice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rolldice
+  template:
+    metadata:
+      labels:
+        app: rolldice
+    spec:
+      containers:
+        - name: rolldice
+          image: rolldice:v1
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          env:
+          - name: OTEL_RESOURCE_ATTRIBUTES
+            value: service.name=rolldice,service.instance.id=localhost:8080
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: http://otel-collector:4318

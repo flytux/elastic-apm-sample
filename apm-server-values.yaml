@@ -1,0 +1,37 @@
+apmConfig:
+  apm-server.yml: |
+    apm-server:
+      host: "0.0.0.0:8200"
+    queue: {}
+    setup.kibana.host: "http://kibana-kibana:5601"
+    output.elasticsearch:
+      hosts: ["https://elasticsearch-master:9200"]
+      username: "${ELASTICSEARCH_USERNAME}"
+      password: "${ELASTICSEARCH_PASSWORD}"
+      protocol: "https"
+      ssl.certificate_authorities: ["/usr/share/apm-server/config/certs/ca.crt"]
+replicas: 1
+
+
+extraEnvs:
+  - name: "ELASTICSEARCH_USERNAME"
+    valueFrom:
+      secretKeyRef:
+        name: elasticsearch-master-credentials
+        key: username
+  - name: "ELASTICSEARCH_PASSWORD"
+    valueFrom:
+      secretKeyRef:
+        name: elasticsearch-master-credentials
+        key: password
+
+
+extraVolumeMounts:
+  - name: elastic-certificates
+    mountPath: /usr/share/apm-server/config/certs
+    readOnly: true
+
+extraVolumes:
+  - name: elastic-certificates
+    secret:
+      secretName: elasticsearch-master-certs

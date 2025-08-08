@@ -1,0 +1,21 @@
+---
+resources:
+  requests:
+    cpu: "100m"
+    memory: "1Gi"
+  limits:
+    cpu: "1000m"
+    memory: "2Gi"
+
+ingress:
+  enabled: true
+  className: "traefik"
+  hosts:
+    - host: kibana.local
+      paths:
+        - path: /
+kibanaConfig: 
+  kibana.yml: |
+    xpack.fleet.packages:
+    - name: apm
+      version: latest
