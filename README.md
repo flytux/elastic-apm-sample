@@ -4,7 +4,6 @@ helm upgrade -i elasticsearch -f elastic-values.yaml -n elk-stack charts/elastic
 # install kibana
 helm upgrade -i kibana -f kibana-values.yaml charts/kibana-8.5.1.tgz -n elk-stack
 
-
 # elastic user password check
 kubectl get secrets --namespace=elk-stack elasticsearch-master-credentials -ojsonpath='{.data.password}' | base64 -d
 
@@ -21,4 +20,7 @@ kubectl apply -f manifests/elastic-agent-standalone-kubernetes.yaml
 kubectl apply -k manifests/otel-collector/
 
 # install  java sample
+cd manifests/java-sample/sample-src/
+docker build -t rolldice:v1 .
+
 kubectl apply -k manifests/java-sample/
